@@ -30,11 +30,10 @@ services:
       # 请将此值替换为你的 GitHub 仓库地址，格式：用户名/仓库名
       - GITHUB_REPO=cruiseven/XINDA_Express
 
-    # 数据卷挂载 (使用 bind mount，挂载 data 目录下的数据库文件)
-    # ./data/database.sqlite:/app/backend/database.sqlite:ro
-    # data 目录专门用于存放数据库文件，与代码分离
+    # 数据卷挂载 (使用 named volume，只持久化数据库文件)
+    # 使用 named volume 可以避免 bind mount 目录的问题
     volumes:
-      - ./data/database.sqlite:/app/backend/database.sqlite:ro
+      - express-data:/app/backend/database.sqlite
 
     # 重启策略
     restart: unless-stopped
@@ -53,6 +52,11 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+
+# 数据卷定义
+volumes:
+  express-data:
+    driver: local
 
 # 网络配置（可选，用于容器间通信）
 networks:

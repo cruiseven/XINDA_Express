@@ -45,25 +45,20 @@ XINDA_express/
 │       ├── api.js         # API调用模块
 │       ├── auth.js        # 认证处理
 │       └── app.js         # 主应用逻辑
-├── data/                   # 数据目录（数据库文件，不上传到GitHub）
-│   └── database.sqlite    # SQLite 数据库文件
 ├── Dockerfile             # Docker 构建文件
 ├── docker-compose.yml     # Docker Compose 配置
 └── package.json           # 项目依赖配置
 ```
 
-## 📂 data 目录说明
+## 📂 数据持久化说明
 
-`data/` 目录专门用于存放数据库文件：
-- **位置**: 项目根目录下的 `data/` 文件夹
-- **文件**: `data/database.sqlite` - SQLite 数据库文件
-- **用途**: 存储所有发货记录、用户信息、承运人等核心数据
-
-### ⚠️ 重要提示
-
-- `data/` 目录已被 `.gitignore` 忽略，**不会上传到 GitHub**
-- 数据库文件需要手动上传到服务器或从备份恢复
-- 每次部署时确保服务器上有 `data/database.sqlite` 文件
+数据库使用 **Docker named volume** (`express-data`) 持久化：
+- **卷名称**: `express-data`
+- **挂载路径**: `/app/backend/database.sqlite`
+- **优点**: 
+  - 自动管理，无需手动创建目录
+  - 数据库与代码分离
+  - 部署时无需手动处理数据库文件
 
 ## 🚀 快速开始
 
@@ -84,29 +79,20 @@ npm start
 git clone https://github.com/cruiseven/XINDA_Express.git
 cd XINDA_Express
 
-# 2. 准备数据目录（从备份恢复数据库）
-mkdir -p data
-# 将数据库文件复制到 data 目录
-# cp /path/to/backup/database.sqlite data/
-
-# 3. 启动容器
+# 2. 启动容器（数据库会自动创建）
 docker-compose up -d
 ```
 
-### ⚠️ 重要：首次部署步骤
+### ⚠️ 重要：数据备份
 
-首次部署或重装系统时，需要手动准备数据库文件：
+如果需要备份或迁移数据：
 
 ```bash
-# 1. 确保有数据库文件
-ls -la data/database.sqlite
+# 备份数据卷
+docker run --rm -v XINDA_express-express-data:/data -v $(pwd):/backup alpine tar czf /backup/backup.tar.gz -C /data .
 
-# 2. 如果没有，从备份恢复
-mkdir -p data
-cp /path/to/your/database.sqlite data/
-
-# 3. 启动
-docker-compose up -d
+# 恢复数据
+docker run --rm -v XINDA_express-express-data:/data -v $(pwd):/backup alpine tar xzf /backup/backup.tar.gz -C /data
 ```
 
 ## 🔐 默认账号
