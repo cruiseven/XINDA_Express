@@ -32,10 +32,10 @@ services:
 
     # 数据卷挂载 (使用 bind mount，挂载 data 目录下的数据库文件)
     # 物理路径: ./data/database.sqlite (项目根目录的 data 文件夹)
-    # 容器内路径: ./data/database.sqlite (与物理路径相同)
+    # 容器内路径: /app/data/database.sqlite (必须是绝对路径)
     # 优点: 数据库与代码完全分离，清晰明了，备份方便
     volumes:
-      - ./data/database.sqlite:./data/database.sqlite
+      - ./data/database.sqlite:/app/data/database.sqlite
 
     # 重启策略
     restart: unless-stopped
