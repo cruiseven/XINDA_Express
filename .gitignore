@@ -6,9 +6,10 @@
 # SQLite 数据库文件，包含所有发货记录、用户信息等重要数据
 backend/database.sqlite
 
-# ========== 配置文件（包含敏感信息和自定义设置） ==========
+# ========== 配置文件（服务器本地配置） ==========
 # GitHub 仓库配置和版本信息
-backend/update-config.json
+# 注意：update-config.json 会被提交到 GitHub，用于版本管理
+# backend/update-config.json
 # 更新日志文件
 backend/update-log.json
 
