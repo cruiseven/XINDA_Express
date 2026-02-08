@@ -30,12 +30,11 @@ services:
       # 请将此值替换为你的 GitHub 仓库地址，格式：用户名/仓库名
       - GITHUB_REPO=cruiseven/XINDA_Express
 
-    # 数据卷挂载 (使用 bind mount，只持久化数据库文件)
-    # - ./backend/database.sqlite:/app/backend/database.sqlite:ro 表示：
-    #   - 主机目录/文件挂载到容器内
-    #   - :ro 表示只读（防止容器修改），如需写入可以去掉 :ro
+    # 数据卷挂载 (使用 bind mount，挂载 data 目录下的数据库文件)
+    # ./data/database.sqlite:/app/backend/database.sqlite:ro
+    # data 目录专门用于存放数据库文件，与代码分离
     volumes:
-      - ./backend/database.sqlite:/app/backend/database.sqlite:ro
+      - ./data/database.sqlite:/app/backend/database.sqlite:ro
 
     # 重启策略
     restart: unless-stopped
