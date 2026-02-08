@@ -23,9 +23,29 @@ async function initDB() {
   const dbExists = fs.existsSync(dbPath);
 
   if (dbExists) {
-    const fileBuffer = fs.readFileSync(dbPath);
-    db = new SQL.Database(fileBuffer);
+    // 检查是否是目录（Docker bind mount 时文件不存在会创建目录）
+    let stat;
+    try {
+      stat = fs.statSync(dbPath);
+    } catch (e) {
+      stat = null;
+    }
+
+    if (stat && stat.isDirectory()) {
+      // 路径是目录，删除它并创建空文件
+      fs.rmSync(dbPath, { recursive: true, force: true });
+      fs.writeFileSync(dbPath, new Buffer([]));
+    } else {
+      // 正常文件，读取数据库
+      const fileBuffer = fs.readFileSync(dbPath);
+      db = new SQL.Database(fileBuffer);
+    }
   } else {
+    // 文件不存在，确保目录存在
+    const dbDir = path.dirname(dbPath);
+    if (!fs.existsSync(dbDir)) {
+      fs.mkdirSync(dbDir, { recursive: true });
+    }
     db = new SQL.Database();
   }
 
