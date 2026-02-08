@@ -13,7 +13,7 @@
     "发货管理",
     "物流系统"
   ],
-  "author": "新达公司",
+  "author": "鑫达机械",
   "license": "MIT",
   "dependencies": {
     "bcryptjs": "^2.4.3",

@@ -22,7 +22,7 @@ COPY backend ./backend
 COPY frontend ./frontend
 
 # 暴露端口
-EXPOSE 6000
+EXPOSE 3000
 
 # 启动应用程序
 CMD ["npm", "start", "--prefix", "backend"]

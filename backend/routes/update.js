@@ -56,7 +56,19 @@ router.get('/version', async (req, res) => {
  */
 router.get('/check', async (req, res) => {
   try {
-    const repo = GITHUB_REPO;
+    // 从配置文件读取仓库地址
+    let repo = GITHUB_REPO;
+    let currentVersion = 'v1.0.0';
+    
+    if (fs.existsSync(UPDATE_CONFIG_FILE)) {
+      try {
+        const config = JSON.parse(fs.readFileSync(UPDATE_CONFIG_FILE, 'utf8'));
+        repo = config.githubRepo || repo;
+        currentVersion = config.currentVersion || currentVersion;
+      } catch (e) {
+        console.error('读取配置文件失败:', e);
+      }
+    }
 
     if (!repo) {
       return res.json({
@@ -90,7 +102,7 @@ router.get('/check', async (req, res) => {
         latestVersion,
         releaseUrl,
         publishedAt,
-        currentVersion: 'v1.0.0'
+        currentVersion
       }
     });
   } catch (error) {
@@ -108,7 +120,17 @@ router.get('/check', async (req, res) => {
  */
 router.post('/execute', async (req, res) => {
   try {
-    const repo = GITHUB_REPO;
+    // 从配置文件读取仓库地址和当前版本
+    let repo = GITHUB_REPO;
+    let currentVersion = 'v1.0.0';
+    
+    if (fs.existsSync(UPDATE_CONFIG_FILE)) {
+      try {
+        const config = JSON.parse(fs.readFileSync(UPDATE_CONFIG_FILE, 'utf8'));
+        repo = config.githubRepo || repo;
+        currentVersion = config.currentVersion || currentVersion;
+      } catch (e) {}
+    }
 
     if (!repo) {
       return res.json({
@@ -133,15 +155,6 @@ router.post('/execute', async (req, res) => {
 
     const data = await response.json();
     const latestVersion = data.tag_name;
-
-    // 检查版本是否需要更新
-    let currentVersion = 'v1.0.0';
-    if (fs.existsSync(UPDATE_CONFIG_FILE)) {
-      try {
-        const config = JSON.parse(fs.readFileSync(UPDATE_CONFIG_FILE, 'utf8'));
-        currentVersion = config.currentVersion || 'v1.0.0';
-      } catch (e) {}
-    }
 
     if (currentVersion === latestVersion) {
       return res.json({

@@ -1,0 +1,50 @@
+# ============================================
+# 鑫达快递发货管理系统 - Git 忽略文件配置
+# ============================================
+
+# ========== 数据库文件（核心数据，切勿上传） ==========
+# SQLite 数据库文件，包含所有发货记录、用户信息等重要数据
+backend/database.sqlite
+
+# ========== 配置文件（包含敏感信息和自定义设置） ==========
+# GitHub 仓库配置和版本信息
+backend/update-config.json
+# 更新日志文件
+backend/update-log.json
+
+# ========== Node.js 依赖包（自动安装，无需上传） ==========
+# 根目录依赖
+node_modules/
+# 后端依赖
+backend/node_modules/
+
+# ========== 日志文件 ==========
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ========== 操作系统文件 ==========
+# macOS 系统文件
+.DS_Store
+# Windows 系统文件
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ========== 环境变量文件（如果有） ==========
+.env
+.env.local
+.env.*.local
+
+# ========== Docker 相关（可选，根据需求决定） ==========
+# 如果你想在服务器上重新构建，可以忽略这些
+.docker/
+docker-compose.override.yml
+
+# ========== 编辑器和 IDE ==========
+.vscode/
+.idea/
+*.swp
+*.swo
+*~

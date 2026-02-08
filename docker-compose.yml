@@ -20,6 +20,9 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=3000
+      # GitHub 仓库配置（用于自动更新功能）
+      # 请将此值替换为你的 GitHub 仓库地址，格式：用户名/仓库名
+      - GITHUB_REPO=cruiseven/XINDA_Express
 
     # 数据卷挂载 (持久化数据库)
     volumes:
