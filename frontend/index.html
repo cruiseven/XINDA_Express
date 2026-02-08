@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>鑫达快递发货管理系统</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <div class="app-container">
+    <!-- 顶部导航栏 -->
+    <header class="header">
+      <div class="header-left">
+        <div class="logo">
+          <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
+            <path
+              d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z" />
+          </svg>
+        </div>
+        <h1>鑫达快递发货管理系统<span style="font-size: 14px; font-weight: normal; opacity: 0.8; margin-left: 8px;">XINDA
+            MACHINERY</span></h1>
+      </div>
+      <div class="header-right">
+        <span id="currentUser" class="user-info"></span>
+        <button id="logoutBtn" class="btn btn-outline">退出登录</button>
+      </div>
+    </header>
+
+    <!-- 侧边导航栏 -->
+    <aside class="sidebar">
+      <nav class="nav-menu">
+        <a href="#" class="nav-item active" data-page="shipments">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path
+              d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" />
+          </svg>
+          <span>发货记录</span>
+        </a>
+        <a href="#" class="nav-item" data-page="summary">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path
+              d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" />
+          </svg>
+          <span>汇总统计</span>
+        </a>
+        <a href="#" class="nav-item" data-page="carriers">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" />
+          </svg>
+          <span>承运人管理</span>
+        </a>
+        <a href="#" class="nav-item" data-page="senders">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path
+              d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+          </svg>
+          <span>发件人管理</span>
+        </a>
+        <a href="#" class="nav-item" data-page="addresses">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path
+              d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+          </svg>
+          <span>收货地址管理</span>
+        </a>
+        <a href="#" class="nav-item" data-page="system" id="systemNav" style="display: none;">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path
+              d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z" />
+          </svg>
+          <span>系统配置</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- 主内容区 -->
+    <main class="main-content">
+      <!-- 发货记录页面 -->
+      <section id="page-shipments" class="page active">
+        <div class="page-header">
+          <h2>发货记录管理</h2>
+          <button id="addShipmentBtn" class="btn btn-primary">+ 添加发货记录</button>
+        </div>
+
+        <div class="filter-bar">
+          <div class="filter-group">
+            <label>月份筛选：</label>
+            <input type="month" id="filterMonth" class="filter-input">
+          </div>
+          <div class="filter-group">
+            <label>承运人：</label>
+            <select id="filterCarrier" class="filter-input">
+              <option value="all">全部</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>状态：</label>
+            <select id="filterStatus" class="filter-input">
+              <option value="all">全部</option>
+              <option value="已发货">已发货</option>
+              <option value="运输中">运输中</option>
+              <option value="已签收">已签收</option>
+              <option value="退回">退回</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>搜索：</label>
+            <input type="text" id="filterSearch" class="filter-input" placeholder="输入单号或备注">
+          </div>
+          <button id="filterBtn" class="btn btn-secondary">查询</button>
+          <button id="exportBtn" class="btn btn-outline">导出数据</button>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th class="th-date">发货日期</th>
+                <th class="th-carrier">承运人</th>
+                <th class="th-tracking">单号</th>
+                <th>发件人</th>
+                <th>收货人</th>
+                <th>收货电话</th>
+                <th class="th-narrow">收货地址</th>
+                <th class="th-narrow">重量(kg)</th>
+                <th class="th-narrow">金额(元)</th>
+                <th>状态</th>
+                <th class="th-narrow">备注</th>
+                <th class="th-action">操作</th>
+              </tr>
+            </thead>
+            <tbody id="shipmentsTableBody">
+              <!-- 数据将通过JavaScript动态填充 -->
+            </tbody>
+          </table>
+        </div>
+
+        <div id="shipmentsPagination" class="pagination">
+          <!-- 分页控件 -->
+        </div>
+      </section>
+
+      <!-- 汇总统计页面 -->
+      <section id="page-summary" class="page">
+        <div class="page-header">
+          <h2>汇总统计</h2>
+          <div class="filter-group inline">
+            <label>月份筛选：</label>
+            <input type="month" id="summaryMonth" class="filter-input">
+          </div>
+        </div>
+
+        <div class="stats-cards">
+          <div class="stat-card">
+            <div class="stat-value" id="totalCount">0</div>
+            <div class="stat-label">总发货量</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="totalAmount">¥0</div>
+            <div class="stat-label">总金额</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="totalWeight">0 kg</div>
+            <div class="stat-label">总重量</div>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>承运人</th>
+                <th>月份</th>
+                <th>发货数量</th>
+                <th>总金额(元)</th>
+                <th>总重量(kg)</th>
+              </tr>
+            </thead>
+            <tbody id="summaryTableBody">
+              <!-- 数据将通过JavaScript动态填充 -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 承运人管理页面 -->
+      <section id="page-carriers" class="page">
+        <div class="page-header">
+          <h2>承运人管理</h2>
+          <button id="addCarrierBtn" class="btn btn-primary">+ 添加承运人</button>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>承运人名称</th>
+                <th>联系人</th>
+                <th>联系电话</th>
+                <th>地址</th>
+                <th>创建时间</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody id="carriersTableBody">
+              <!-- 数据将通过JavaScript动态填充 -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 发件人管理页面 -->
+      <section id="page-senders" class="page">
+        <div class="page-header">
+          <h2>发件人管理</h2>
+          <button id="addSenderBtn" class="btn btn-primary">+ 添加发件人</button>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>发件人名称</th>
+                <th>联系电话</th>
+                <th>地址</th>
+                <th>创建时间</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody id="sendersTableBody">
+              <!-- 数据将通过JavaScript动态填充 -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 收货地址管理页面 -->
+      <section id="page-addresses" class="page">
+        <div class="page-header">
+          <h2>收货地址管理</h2>
+          <button id="addAddressBtn" class="btn btn-primary">+ 添加收货地址</button>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>收货人</th>
+                <th>联系人</th>
+                <th>联系电话</th>
+                <th>收货地址</th>
+                <th>创建时间</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody id="addressesTableBody">
+              <!-- 数据将通过JavaScript动态填充 -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 系统配置页面 -->
+      <section id="page-system" class="page">
+        <div class="page-header">
+          <h2>系统配置</h2>
+        </div>
+
+        <!-- GitHub自动更新配置 -->
+        <div class="card">
+          <h3>🔄 系统更新</h3>
+          <div class="update-info" id="updateInfo">
+            <div class="version-info">
+              <p><strong>当前版本：</strong><span id="currentVersion">v1.0.0</span></p>
+              <p><strong>最新版本：</strong><span id="latestVersion" class="loading">检查中...</span></p>
+              <p><strong>GitHub仓库：</strong><span id="githubRepo">未配置</span></p>
+            </div>
+            <div class="update-actions">
+              <button id="checkUpdateBtn" class="btn btn-secondary">🔍 检查更新</button>
+              <button id="updateBtn" class="btn btn-primary" style="display: none;">⬇️ 立即更新</button>
+            </div>
+            <div id="updateLog" class="update-log"></div>
+          </div>
+        </div>
+
+        <div class="page-header" style="margin-top: 30px;">
+          <h3>👥 人员管理</h3>
+          <button id="addUserBtn" class="btn btn-primary">+ 添加用户</button>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>用户名</th>
+                <th>状态</th>
+                <th>创建时间</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody id="usersTableBody">
+              <!-- 数据将通过JavaScript动态填充 -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- 模态框 -->
+  <div id="modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalTitle">标题</h3>
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+      </div>
+      <div id="modalBody" class="modal-body">
+        <!-- 模态框内容将通过JavaScript动态填充 -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 提示框 -->
+  <div id="toast" class="toast" style="display: none;">
+    <span id="toastMessage"></span>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+</body>
+
+</html>

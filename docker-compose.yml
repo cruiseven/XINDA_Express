@@ -1,0 +1,56 @@
+# 鑫达快递发货管理系统 (XINDA MACHINERY) - Docker Compose配置
+# 用于容器化部署和编排
+
+services:
+  # 发货管理应用服务
+  express-app:
+    # 构建配置
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    # 容器名称
+    container_name: xinda-express
+
+    # 端口映射 (宿主机端口:容器端口)
+    ports:
+      - "3000:3000"
+
+    # 环境变量
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+
+    # 数据卷挂载 (持久化数据库)
+    volumes:
+      - express-data:/app/backend
+
+    # 重启策略
+    restart: unless-stopped
+
+    # 健康检查
+    healthcheck:
+      test: [ "CMD", "wget", "-q", "--spider", "http://localhost:3000/api/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+    # 日志配置
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+# 数据卷定义
+volumes:
+  # 数据库文件持久化卷
+  express-data:
+    driver: local
+
+# 网络配置（可选，用于容器间通信）
+networks:
+  default:
+    name: express-network
+    driver: bridge
