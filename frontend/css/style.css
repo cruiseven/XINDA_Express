@@ -1071,3 +1071,71 @@ datalist {
     transform: rotate(360deg);
   }
 }
+
+/* ==================== 底部状态栏样式 ==================== */
+
+.status-bar {
+  position: fixed;
+  bottom: 0;
+  left: 200px;
+  right: 0;
+  height: 40px;
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  color: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 24px;
+  font-size: 13px;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  gap: 24px;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.status-item:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.status-item svg {
+  opacity: 0.9;
+}
+
+.status-item span {
+  font-family: 'SF Mono', 'Consolas', 'Monaco', monospace;
+  letter-spacing: 0.5px;
+}
+
+#currentTime {
+  min-width: 70px;
+  text-align: center;
+}
+
+#currentDate {
+  min-width: 100px;
+  text-align: center;
+}
+
+#systemStatus {
+  color: #22c55e;
+  font-weight: 500;
+}
+
+#versionInfo {
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+/* 主内容区底部留出空间，避免被状态栏遮挡 */
+.main-content {
+  padding-bottom: 60px;
+}

@@ -124,6 +124,9 @@ async function initApp() {
 
   // 加载默认页面（发货记录）
   await navigateToPage('shipments');
+
+  // 初始化底部状态栏
+  initStatusBar();
 }
 
 /**
@@ -1507,3 +1510,68 @@ function getTrackingStatusClass(status) {
 
 // 暴露物流查询函数到全局
 window.showTracking = showTracking;
+
+// ==================== 底部状态栏 ====================
+
+/**
+ * 初始化底部状态栏
+ * 更新时间、系统状态等信息
+ */
+function initStatusBar() {
+  // 初始化时间显示
+  updateDateTime();
+  
+  // 每秒更新时间
+  setInterval(updateDateTime, 1000);
+  
+  // 初始化版本信息
+  initVersionInfo();
+}
+
+/**
+ * 更新日期和时间显示
+ */
+function updateDateTime() {
+  var now = new Date();
+  
+  // 更新时间
+  var timeElement = document.getElementById('currentTime');
+  if (timeElement) {
+    var hours = String(now.getHours()).padStart(2, '0');
+    var minutes = String(now.getMinutes()).padStart(2, '0');
+    var seconds = String(now.getSeconds()).padStart(2, '0');
+    timeElement.textContent = hours + ':' + minutes + ':' + seconds;
+  }
+  
+  // 更新日期
+  var dateElement = document.getElementById('currentDate');
+  if (dateElement) {
+    var year = now.getFullYear();
+    var month = String(now.getMonth() + 1).padStart(2, '0');
+    var day = String(now.getDate()).padStart(2, '0');
+    dateElement.textContent = year + '/' + month + '/' + day;
+  }
+}
+
+/**
+ * 初始化版本信息显示
+ */
+async function initVersionInfo() {
+  var versionElement = document.getElementById('versionInfo');
+  if (!versionElement) return;
+  
+  try {
+    var versionResult = await getVersion();
+    if (versionResult.success) {
+      versionElement.textContent = versionResult.data.currentVersion || 'v1.0.0';
+    } else {
+      versionElement.textContent = 'v1.0.0';
+    }
+  } catch (error) {
+    console.error('获取版本信息失败:', error);
+    versionElement.textContent = 'v1.0.0';
+  }
+}
+
+// 暴露状态栏函数到全局
+window.initStatusBar = initStatusBar;
