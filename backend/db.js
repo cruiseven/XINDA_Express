@@ -9,7 +9,7 @@ const path = require('path');
 const bcrypt = require('bcryptjs');
 
 let db = null;
-const dbPath = path.join(__dirname, 'database.sqlite');
+const dbPath = './data/database.sqlite';
 
 /**
  * 初始化数据库连接

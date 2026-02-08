@@ -2,9 +2,11 @@
 # 鑫达快递发货管理系统 - Git 忽略文件配置
 # ============================================
 
-# ========== 数据库文件（使用 Docker volume 持久化，不上传） ==========
-# 数据库文件通过 named volume 持久化，不会提交到 GitHub
-# backend/database.sqlite
+# ========== 数据库文件（data 目录，与代码分离） ==========
+# 数据库文件存放在 data 目录下，不上传到 GitHub
+data/database.sqlite
+# 同时忽略旧的 backend/database.sqlite（如果有）
+backend/database.sqlite
 
 # ========== 配置文件（服务器本地配置） ==========
 # GitHub 仓库配置和版本信息
